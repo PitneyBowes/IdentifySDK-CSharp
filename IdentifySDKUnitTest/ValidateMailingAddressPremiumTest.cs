@@ -128,53 +128,5 @@ namespace IdentifySDKTestCases
             }
         }
 
-        [TestMethod]
-        public void getAddressProjsonTestAndCompareSDKResponseTest()
-        {
-            try
-            {
-                String inputjsonAddresses = "{\"Input\": {"
-                              + "\"Row\":[{"
-                               + "\"AddressLine1\": \"101 cherry st\","
-                               + "\"Country\": \"us\","
-                               + "\"PostalCode\": \"\""
-                      + "},"
-                      +"{"
-                      + "\"AddressLine1\": \"12 yonge st\","
-                      + "\"City\": \"toronto\","
-                      + "\"Country\": \"ca\","
-                      + "\"StateProvince\": \"on\","
-                      + "\"PostalCode\": \"\""
-                      + "}]}}";
-
-                List<Address> rowList = new List<Address>();
-
-                user_field userfield = new user_field { name = "email", value = "xyz@pb.com" };
-                List<user_field> user_fields = new List<user_field>();
-                user_fields.Add(userfield);
-
-                rowList.Add(new Address(null, addressline1: "101 cherry st", country:"us"));
-
-                List<user_field> user_fieldsample = new List<user_field>();
-                rowList.Add(new Address(null, addressline1: "12 yonge st", country: "ca", stateorprovince: "on", city: "toronto"));
-                options op = new options();
-
-                input input = new input();
-                input.AddressList = rowList;
-
-                ValidateMailingAddressPremiumAPIRequest request = new ValidateMailingAddressPremiumAPIRequest(input, op);
-                ValidateMailingAddressPremiumAPIResponse response = identifyAddressService.ValidateMailingAddressPremium(request);
-                string sdkResponse = Utility.ObjectToJson<ValidateMailingAddressPremiumAPIResponse>(response);
-
-                String apiResponse = TestUtility.ValidateFromAPI(TEST_URL, "/identifyaddress/v1/rest/validatemailingaddresspremium/", TEST_TOKEN, inputjsonAddresses, com.pb.identify.utils.Utility.contentType.json);
-
-                Assert.AreEqual(sdkResponse, apiResponse);
-
-            }
-            catch (Exception e)
-            {
-                Assert.Fail("Unexpected Exception");
-            }
-        }
-    }
+     }
 }

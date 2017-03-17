@@ -136,38 +136,5 @@ namespace IdentifySDKTestCases
             }
         }
 
-        [TestMethod]
-        public void getGlobalWatchlistTestAndCompareSDKResponseTest()
-        {
-            try
-            {
-                String inputjsonAddresses = "{\"Input\": {"
-                              + "\"Row\":[{"
-                              + "\"AddressLine1\": \"701 Pine Drift Dr\","
-                      + "\"Country\": \"usa\","
-                      + "\"Name\": \"John Smith\""
-                      + "}]}}";
-
-
-                List<Record> rowList = new List<Record>();
-                rowList.Add(new Record(null, addressline1: "701 Pine Drift Dr", name: "John Smith", country: "usa"));
-
-                input input = new input();
-                input.RecordList = rowList;
-
-                CheckGlobalWatchListAPIRequest request = new CheckGlobalWatchListAPIRequest(input);
-                CheckGlobalWatchListAPIResponse response = identifyRiskService.CheckGlobalWatchList(request);
-                string sdkResponse = Utility.ObjectToJson<CheckGlobalWatchListAPIResponse>(response);
-
-                String apiResponse = TestUtility.ValidateFromAPI(TEST_URL,"/identifyrisk/v1/rest/checkglobalwatchlist/", TEST_TOKEN, inputjsonAddresses, com.pb.identify.utils.Utility.contentType.json);
-
-                Assert.AreEqual(sdkResponse, apiResponse);
-
-            }
-            catch (Exception e)
-            {
-                Assert.Fail("Unexpected Exception");
-            }
-        }
     }
 }
