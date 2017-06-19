@@ -17,6 +17,8 @@ using com.pb.identify.common.model;
 using com.pb.identify.identifyAddress.Model.ValidateMailingAddress;
 using com.pb.identify.identifyAddress.Model.ValidateMailingAddressPro;
 using com.pb.identify.identifyAddress.Model.ValidateMailingAddressPremium;
+using com.pb.identify.identifyAddress.Model.GetCityStateProvince;
+using com.pb.identify.identifyAddress.Model.GetPostalCodes;
 
 using com.pb.identify.utils;
 using System;
@@ -49,6 +51,20 @@ namespace com.pb.identify.identifyAddress
         ///
         /// </summary>
         event EventHandler<WebResponseEventArgs<ValidateMailingAddressPremiumAPIResponse>> ValidateAddressPremiumFinishedEvent;
+
+        /// <summary>
+        ///  This event is Raised Asynchronously when web  response is complete.The event has Argument WebRequestFinishedEvent
+        ///  which has information regarding the response object and exception occurred
+        ///
+        /// </summary>
+        event EventHandler<WebResponseEventArgs<GetCityStateProvinceAPIResponse>> GetCityStateProvinceFinishedEvent;
+
+        /// <summary>
+        ///  This event is Raised Asynchronously when web  response is complete.The event has Argument WebRequestFinishedEvent
+        ///  which has information regarding the response object and exception occurred
+        ///
+        /// </summary>
+        event EventHandler<WebResponseEventArgs<GetPostalCodesAPIResponse>> GetPostalCodesFinishedEvent;
 
         /// <summary>
         /// Validates the input address request in asynchronous mode.
@@ -97,5 +113,37 @@ namespace com.pb.identify.identifyAddress
         /// <param name="request">Required - ValidateMailingAddressPremiumAPIRequest request (object filled with input and option) </param>
         /// <returns>ValidateMailingAddressPremiumAPIResponse</returns>
         ValidateMailingAddressPremiumAPIResponse ValidateMailingAddressPremium(ValidateMailingAddressPremiumAPIRequest request);
+
+        /// <summary>
+        /// Retrieves response for the input records request in asynchronous mode.
+        /// Response can be retrieved by subscribing to event GetCityStateProvinceFinishedEvent.
+        /// Accepts the postal code records request as input and returns city and state province 
+        /// </summary>
+        /// <param name="request">Required - GetCityStateProvinceAPIRequest request (object filled with input and option) </param>
+        void GetCityStateProvinceAsync(GetCityStateProvinceAPIRequest request);
+
+        /// <summary>
+        /// Retrieves response for the input records request.
+        /// Accepts the postal code records request as input and returns city and state province 
+        /// </summary>
+        /// <param name="request">Required - GetCityStateProvinceAPIRequest request (object filled with input and option) </param>
+        /// <returns>GetCityStateProvinceAPIResponse</returns>
+        GetCityStateProvinceAPIResponse GetCityStateProvince(GetCityStateProvinceAPIRequest request);
+
+        /// <summary>
+        /// Retrieves response for the input records request in asynchronous mode.
+        /// Response can be retrieved by subscribing to event GetPostalCodesFinishedEvent.
+        /// Accepts the city and state province records request as input and returns postal codes.
+        /// </summary>
+        /// <param name="request">Required - GetPostalCodesAPIRequest request (object filled with input and option) </param>
+        void GetPostalCodesAsync(GetPostalCodesAPIRequest request);
+
+        /// <summary>
+        /// Retrieves response for the input records request.
+        /// Accepts the city and state province records request as input and returns postal codes
+        /// </summary>
+        /// <param name="request">Required - GetPostalCodesAPIRequest request (object filled with input and option) </param>
+        /// <returns>GetPostalCodesAPIRequestAPIResponse</returns>
+        GetPostalCodesAPIResponse GetPostalCodes(GetPostalCodesAPIRequest request);
     }
 }

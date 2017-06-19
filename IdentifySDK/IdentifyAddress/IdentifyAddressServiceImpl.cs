@@ -21,6 +21,8 @@ using com.pb.identify.common;
 using com.pb.identify.identifyAddress.Model.ValidateMailingAddress;
 using com.pb.identify.identifyAddress.Model.ValidateMailingAddressPro;
 using com.pb.identify.identifyAddress.Model.ValidateMailingAddressPremium;
+using com.pb.identify.identifyAddress.Model.GetCityStateProvince;
+using com.pb.identify.identifyAddress.Model.GetPostalCodes;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using System.Xml;
@@ -53,6 +55,14 @@ namespace com.pb.identify.identifyAddress
         /// </summary>
         private static readonly String validateMailingAddressPremiumUrl = "/validatemailingaddresspremium/";
         /// <summary>
+        /// The getcitystateprovince URL
+        /// </summary>
+        private static readonly String getCityStateProvinceUrl = "/getcitystateprovince/";
+        /// <summary>
+        /// The getpostalcodes URL
+        /// </summary>
+        private static readonly String getPostalCodesUrl = "/getpostalcodes/";
+        /// <summary>
         /// The URL maker
         /// </summary>
         private UrlMaker urlMaker;
@@ -74,6 +84,18 @@ namespace com.pb.identify.identifyAddress
         /// which has information regarding the response object and exception occurred
         /// </summary>
         public event EventHandler<common.WebResponseEventArgs<ValidateMailingAddressPremiumAPIResponse>> ValidateAddressPremiumFinishedEvent;
+
+        /// <summary>
+        /// This event is Raised Asynchronously when web  response is complete.The event has Argument WebRequestFinishedEvent
+        /// which has information regarding the response object and exception occurred
+        /// </summary>
+        public event EventHandler<common.WebResponseEventArgs<GetCityStateProvinceAPIResponse>> GetCityStateProvinceFinishedEvent;
+
+        /// <summary>
+        /// This event is Raised Asynchronously when web  response is complete.The event has Argument WebRequestFinishedEvent
+        /// which has information regarding the response object and exception occurred
+        /// </summary>
+        public event EventHandler<common.WebResponseEventArgs<GetPostalCodesAPIResponse>> GetPostalCodesFinishedEvent;
 
         #region ValidateMailingAddress
         /// <summary>
@@ -253,5 +275,122 @@ namespace com.pb.identify.identifyAddress
         }
         #endregion
 
+        #region GetCityStateProvince
+        /// <summary>
+        /// Retrieves response for the input records request.
+        /// Accepts the postal code records request as input and returns city and state province 
+        /// </summary>
+        /// <param name="request">Required - GetCityStateProvinceAPIRequest request (object filled with input and option) </param>
+        /// <returns>GetCityStateProvinceAPIResponse</returns>
+        public GetCityStateProvinceAPIResponse GetCityStateProvince(GetCityStateProvinceAPIRequest request)
+        {
+            UrlMaker urlMaker = UrlMaker.getInstance();
+            StringBuilder urlBuilder = new StringBuilder(urlMaker.getAbsoluteUrl(identifyAddressUrl));
+            string url = urlBuilder.ToString() + getCityStateProvinceUrl;
+
+            String requestString = Utility.ObjectToJson<GetCityStateProvinceAPIRequest>(request);
+            return Utility.processAPIRequest<GetCityStateProvinceAPIResponse>(url, requestString);
+        }
+
+        /// <summary>
+        /// Retrieves response for the input records request in asynchronous mode.
+        /// Response can be retrieved by subscribing to event GetCityStateProvinceFinishedEvent.
+        /// Accepts the postal code records request as input and returns city and state province 
+        /// </summary>
+        /// <param name="request">Required - GetCityStateProvinceAPIRequest request (object filled with input and option) </param>
+        public void GetCityStateProvinceAsync(GetCityStateProvinceAPIRequest request)
+        {
+            UrlMaker urlMaker = UrlMaker.getInstance();
+            StringBuilder urlBuilder = new StringBuilder(urlMaker.getAbsoluteUrl(identifyAddressUrl));
+            string url = urlBuilder.ToString() + getCityStateProvinceUrl;
+
+            String requestString = Utility.ObjectToJson<GetCityStateProvinceAPIRequest>(request);
+            processAPIRequestDelegate<GetCityStateProvinceAPIResponse> delegateApiRequest = new processAPIRequestDelegate<GetCityStateProvinceAPIResponse>(Utility.processAPIRequest<GetCityStateProvinceAPIResponse>);
+            delegateApiRequest.BeginInvoke(url, requestString, new AsyncCallback(WorkflowCompletedCallbackGetCityStateProvince), null);
+        }
+
+        /// <summary>
+        /// Workflows the completed callback.
+        /// </summary>
+        /// <param name="results">The results.</param>
+        void WorkflowCompletedCallbackGetCityStateProvince(IAsyncResult results)
+        {
+            AsyncResult result = (AsyncResult)results;
+            processAPIRequestDelegate<GetCityStateProvinceAPIResponse> del = (processAPIRequestDelegate<GetCityStateProvinceAPIResponse>)result.AsyncDelegate;
+            WebResponseEventArgs<GetCityStateProvinceAPIResponse> webResponceEventArgs;
+            try
+            {
+                Debug.WriteLine(" GetCityStateProvince SDK Asynchronous function called ");
+                GetCityStateProvinceAPIResponse Response = del.EndInvoke(results);
+                webResponceEventArgs = new WebResponseEventArgs<GetCityStateProvinceAPIResponse>(Response, null);
+                GetCityStateProvinceFinishedEvent.Invoke(this, webResponceEventArgs);
+            }
+            catch (SdkException sdkException)
+            {
+                webResponceEventArgs = new WebResponseEventArgs<GetCityStateProvinceAPIResponse>(null, sdkException);
+                GetCityStateProvinceFinishedEvent.Invoke(this, webResponceEventArgs);
+                Trace.WriteLine(sdkException.Message);
+            }
+        }
+        #endregion
+
+        #region GetPostalCodes
+        /// <summary>
+        /// Retrieves response for the input records request.
+        /// Accepts the city and state province records request as input and returns postal codes.
+        /// </summary>
+        /// <param name="request">Required - GetPostalCodesAPIRequest request (object filled with input and option) </param>
+        /// <returns>GetPostalCodesAPIResponse</returns>
+        public GetPostalCodesAPIResponse GetPostalCodes(GetPostalCodesAPIRequest request)
+        {
+            UrlMaker urlMaker = UrlMaker.getInstance();
+            StringBuilder urlBuilder = new StringBuilder(urlMaker.getAbsoluteUrl(identifyAddressUrl));
+            string url = urlBuilder.ToString() + getPostalCodesUrl;
+
+            String requestString = Utility.ObjectToJson<GetPostalCodesAPIRequest>(request);
+            return Utility.processAPIRequest<GetPostalCodesAPIResponse>(url, requestString);
+        }
+
+        /// <summary>
+        /// Retrieves response for the input records request in asynchronous mode.
+        /// Response can be retrieved by subscribing to event GetPostalCodesFinishedEvent.
+        /// Accepts the city and state province records request as input and returns postal codes.
+        /// </summary>
+        /// <param name="request">Required - GetPostalCodesAPIRequest request (object filled with input and option) </param>
+        public void GetPostalCodesAsync(GetPostalCodesAPIRequest request)
+        {
+            UrlMaker urlMaker = UrlMaker.getInstance();
+            StringBuilder urlBuilder = new StringBuilder(urlMaker.getAbsoluteUrl(identifyAddressUrl));
+            string url = urlBuilder.ToString() + getPostalCodesUrl;
+
+            String requestString = Utility.ObjectToJson<GetPostalCodesAPIRequest>(request);
+            processAPIRequestDelegate<GetPostalCodesAPIResponse> delegateApiRequest = new processAPIRequestDelegate<GetPostalCodesAPIResponse>(Utility.processAPIRequest<GetPostalCodesAPIResponse>);
+            delegateApiRequest.BeginInvoke(url, requestString, new AsyncCallback(WorkflowCompletedCallbackGetPostalCodes), null);
+        }
+
+        /// <summary>
+        /// Workflows the completed callback.
+        /// </summary>
+        /// <param name="results">The results.</param>
+        void WorkflowCompletedCallbackGetPostalCodes(IAsyncResult results)
+        {
+            AsyncResult result = (AsyncResult)results;
+            processAPIRequestDelegate<GetPostalCodesAPIResponse> del = (processAPIRequestDelegate<GetPostalCodesAPIResponse>)result.AsyncDelegate;
+            WebResponseEventArgs<GetPostalCodesAPIResponse> webResponceEventArgs;
+            try
+            {
+                Debug.WriteLine(" GetPostalCodes SDK Asynchronous function called ");
+                GetPostalCodesAPIResponse Response = del.EndInvoke(results);
+                webResponceEventArgs = new WebResponseEventArgs<GetPostalCodesAPIResponse>(Response, null);
+                GetPostalCodesFinishedEvent.Invoke(this, webResponceEventArgs);
+            }
+            catch (SdkException sdkException)
+            {
+                webResponceEventArgs = new WebResponseEventArgs<GetPostalCodesAPIResponse>(null, sdkException);
+                GetPostalCodesFinishedEvent.Invoke(this, webResponceEventArgs);
+                Trace.WriteLine(sdkException.Message);
+            }
+        }
+        #endregion
     }
 }

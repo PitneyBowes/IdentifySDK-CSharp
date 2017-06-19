@@ -38,8 +38,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IdentifySDK-4.0.0">
-      <HintPath>..\IdentifySDK\bin\Release\IdentifySDK-4.0.0.dll</HintPath>
+    <Reference Include="IdentifySDK-4.1.0">
+      <HintPath>..\IdentifySDK\bin\Release\IdentifySDK-4.1.0.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -64,6 +64,8 @@
     <Compile Include="BasicAuthServiceImpl.cs" />
     <Compile Include="CheckGlobalWatchListTest.cs" />
     <Compile Include="ExtractEntitiesTest.cs" />
+    <Compile Include="GetPostalCodesTest.cs" />
+    <Compile Include="GetCityStateProvinceTest.cs" />
     <Compile Include="ValidateEmailAddressTest.cs" />
     <Compile Include="ValidateMailingAddressPremiumTest.cs" />
     <Compile Include="ValidateMailingAddressProTest.cs" />
