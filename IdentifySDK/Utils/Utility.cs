@@ -12,7 +12,6 @@ License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF 
 See the License for the specific language governing permissions and limitations under the License. */
 
 #endregion
-
 using com.pb.identify.common.model;
 using com.pb.identify.common;
 using com.pb.identify.exception;
@@ -142,6 +141,7 @@ namespace com.pb.identify.utils
                 {
                     client.Headers.Add(HttpRequestHeader.ContentType, contentTypeString);
                     client.Headers.Add(Constants.AUTH_HEADER, accessToken);
+                    client.Headers.Add(Constants.USER_AGENT, "CSharp-SDK");
                     String resp = (client.UploadString(uri, inputaddress));
                     return resp;
                 }

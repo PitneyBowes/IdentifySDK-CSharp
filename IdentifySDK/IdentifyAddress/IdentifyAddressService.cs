@@ -19,6 +19,7 @@ using com.pb.identify.identifyAddress.Model.ValidateMailingAddressPro;
 using com.pb.identify.identifyAddress.Model.ValidateMailingAddressPremium;
 using com.pb.identify.identifyAddress.Model.GetCityStateProvince;
 using com.pb.identify.identifyAddress.Model.GetPostalCodes;
+using com.pb.identify.identifyAddress.Model.ValidateMailingAddressUSCAN;
 
 using com.pb.identify.utils;
 using System;
@@ -65,6 +66,13 @@ namespace com.pb.identify.identifyAddress
         ///
         /// </summary>
         event EventHandler<WebResponseEventArgs<GetPostalCodesAPIResponse>> GetPostalCodesFinishedEvent;
+
+        /// <summary>
+        ///  This event is Raised Asynchronously when web  response is complete.The event has Argument WebRequestFinishedEvent
+        ///  which has information regarding the response object and exception occurred
+        ///
+        /// </summary>
+        event EventHandler<WebResponseEventArgs<ValidateMailingAddressUSCANAPIResponse>> ValidateAddressUSCANFinishedEvent;
 
         /// <summary>
         /// Validates the input address request in asynchronous mode.
@@ -145,5 +153,21 @@ namespace com.pb.identify.identifyAddress
         /// <param name="request">Required - GetPostalCodesAPIRequest request (object filled with input and option) </param>
         /// <returns>GetPostalCodesAPIRequestAPIResponse</returns>
         GetPostalCodesAPIResponse GetPostalCodes(GetPostalCodesAPIRequest request);
+
+        /// <summary>
+        /// Validates the input address request in asynchronous mode.
+        /// Response can be retrieved by subscribing to event ValidateAddressUSCANFinishedEvent.
+        /// Accepts the address request as input and returns validated addresses
+        /// </summary>
+        /// <param name="request">Required - ValidateMailingAddressUSCANAPIRequest request (object filled with input and option) </param>
+        void ValidateMailingAddressUSCANAsync(ValidateMailingAddressUSCANAPIRequest request);
+
+        /// <summary>
+        /// Validates the input address request.
+        /// Accepts the address request as input and returns validated addresses 
+        /// </summary>
+        /// <param name="request">Required - ValidateMailingAddressUSCANAPIRequest request (object filled with input and option) </param>
+        /// <returns>ValidateMailingAddressPremiumAPIResponse</returns>
+        ValidateMailingAddressUSCANAPIResponse ValidateMailingAddressUSCAN(ValidateMailingAddressUSCANAPIRequest request);
     }
 }

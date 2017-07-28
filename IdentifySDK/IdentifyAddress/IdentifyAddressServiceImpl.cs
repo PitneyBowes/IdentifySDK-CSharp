@@ -23,6 +23,7 @@ using com.pb.identify.identifyAddress.Model.ValidateMailingAddressPro;
 using com.pb.identify.identifyAddress.Model.ValidateMailingAddressPremium;
 using com.pb.identify.identifyAddress.Model.GetCityStateProvince;
 using com.pb.identify.identifyAddress.Model.GetPostalCodes;
+using com.pb.identify.identifyAddress.Model.ValidateMailingAddressUSCAN;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using System.Xml;
@@ -63,6 +64,10 @@ namespace com.pb.identify.identifyAddress
         /// </summary>
         private static readonly String getPostalCodesUrl = "/getpostalcodes/";
         /// <summary>
+        /// The validatemailingaddressuscan URL
+        /// </summary>
+        private static readonly String validateMailingAddressUSCANUrl = "/validatemailingaddressuscan/";
+        /// <summary>
         /// The URL maker
         /// </summary>
         private UrlMaker urlMaker;
@@ -96,6 +101,12 @@ namespace com.pb.identify.identifyAddress
         /// which has information regarding the response object and exception occurred
         /// </summary>
         public event EventHandler<common.WebResponseEventArgs<GetPostalCodesAPIResponse>> GetPostalCodesFinishedEvent;
+
+        /// <summary>
+        /// This event is Raised Asynchronously when web  response is complete.The event has Argument WebRequestFinishedEvent
+        /// which has information regarding the response object and exception occurred
+        /// </summary>
+        public event EventHandler<common.WebResponseEventArgs<ValidateMailingAddressUSCANAPIResponse>> ValidateAddressUSCANFinishedEvent;
 
         #region ValidateMailingAddress
         /// <summary>
@@ -388,6 +399,65 @@ namespace com.pb.identify.identifyAddress
             {
                 webResponceEventArgs = new WebResponseEventArgs<GetPostalCodesAPIResponse>(null, sdkException);
                 GetPostalCodesFinishedEvent.Invoke(this, webResponceEventArgs);
+                Trace.WriteLine(sdkException.Message);
+            }
+        }
+        #endregion
+
+        #region ValidateMailingAddressUSCAN
+        /// <summary>
+        /// Validates the input address request.
+        /// Accepts the address request as input and returns validated addresses 
+        /// </summary>
+        /// <param name="request">Required - ValidateMailingAddressUSCANAPIRequest request (object filled with input and option) </param>
+        /// <returns>ValidateMailingAddressUSCANAPIResponse</returns>
+        public ValidateMailingAddressUSCANAPIResponse ValidateMailingAddressUSCAN(ValidateMailingAddressUSCANAPIRequest request)
+        {
+            UrlMaker urlMaker = UrlMaker.getInstance();
+            StringBuilder urlBuilder = new StringBuilder(urlMaker.getAbsoluteUrl(identifyAddressUrl));
+            string url = urlBuilder.ToString() + validateMailingAddressUSCANUrl;
+
+            String requestString = Utility.ObjectToJson<ValidateMailingAddressUSCANAPIRequest>(request);
+            return Utility.processAPIRequest<ValidateMailingAddressUSCANAPIResponse>(url, requestString);
+        }
+
+        /// <summary>
+        /// Validates the input address request in asynchronous mode.
+        /// Response can be retrieved by subscribing to event ValidateAddressProFinishedEvent.
+        /// Accepts the address request as input and returns validated addresses 
+        /// </summary>
+        /// <param name="request">Required - ValidateMailingAddressUSCANAPIRequest request (object filled with input and option) </param>
+        public void ValidateMailingAddressUSCANAsync(ValidateMailingAddressUSCANAPIRequest request)
+        {
+            UrlMaker urlMaker = UrlMaker.getInstance();
+            StringBuilder urlBuilder = new StringBuilder(urlMaker.getAbsoluteUrl(identifyAddressUrl));
+            string url = urlBuilder.ToString() + validateMailingAddressUSCANUrl;
+
+            String requestString = Utility.ObjectToJson<ValidateMailingAddressUSCANAPIRequest>(request);
+            processAPIRequestDelegate<ValidateMailingAddressUSCANAPIResponse> delegateApiRequest = new processAPIRequestDelegate<ValidateMailingAddressUSCANAPIResponse>(Utility.processAPIRequest<ValidateMailingAddressUSCANAPIResponse>);
+            delegateApiRequest.BeginInvoke(url, requestString, new AsyncCallback(WorkflowCompletedCallbackValidateAddressUSCAN), null);
+        }
+
+        /// <summary>
+        /// Workflows the completed callback.
+        /// </summary>
+        /// <param name="results">The results.</param>
+        void WorkflowCompletedCallbackValidateAddressUSCAN(IAsyncResult results)
+        {
+            AsyncResult result = (AsyncResult)results;
+            processAPIRequestDelegate<ValidateMailingAddressUSCANAPIResponse> del = (processAPIRequestDelegate<ValidateMailingAddressUSCANAPIResponse>)result.AsyncDelegate;
+            WebResponseEventArgs<ValidateMailingAddressUSCANAPIResponse> webResponceEventArgs;
+            try
+            {
+                Debug.WriteLine(" ValidateMailingAddressUSCAN SDK Asynchronous function called ");
+                ValidateMailingAddressUSCANAPIResponse Response = del.EndInvoke(results);
+                webResponceEventArgs = new WebResponseEventArgs<ValidateMailingAddressUSCANAPIResponse>(Response, null);
+                ValidateAddressUSCANFinishedEvent.Invoke(this, webResponceEventArgs);
+            }
+            catch (SdkException sdkException)
+            {
+                webResponceEventArgs = new WebResponseEventArgs<ValidateMailingAddressUSCANAPIResponse>(null, sdkException);
+                ValidateAddressUSCANFinishedEvent.Invoke(this, webResponceEventArgs);
                 Trace.WriteLine(sdkException.Message);
             }
         }

@@ -12,7 +12,6 @@ License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF 
 See the License for the specific language governing permissions and limitations under the License. */
 
 #endregion
-
 using System;
 
 namespace com.pb.identify.utils
@@ -38,6 +37,11 @@ namespace com.pb.identify.utils
         /// The basic
         /// </summary>
         public static readonly String BASIC = "Basic ";
+
+        /// <summary>
+        /// The UserAgent
+        /// </summary>
+        public static readonly String USER_AGENT = "User-Agent";
 
         /// <summary>
         /// The client_ credentials
